@@ -4,4 +4,9 @@
 
 [SmartPhoneMacroApp](https://developer.android.com/studio/install?hl=ko)https://developer.android.com/studio/install?hl=ko
 
+# 참고 UI
+메인 UI
+
+![image](https://github.com/EazyNick/SmartPhoneMacroApp/assets/123717093/abdcdc1c-5394-4ae8-a0ca-a31d82d5dab0)
+
 
