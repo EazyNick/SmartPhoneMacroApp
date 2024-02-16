@@ -7,7 +7,7 @@
 # 참고 UI
 메인 UI
 
-<img src="[이미지_URL](https://github.com/EazyNick/SmartPhoneMacroApp/assets/123717093/abdcdc1c-5394-4ae8-a0ca-a31d82d5dab0)" width="100" height="100">
+<img src="(https://github.com/EazyNick/SmartPhoneMacroApp/assets/123717093/abdcdc1c-5394-4ae8-a0ca-a31d82d5dab0)" width="100" height="100">
 
 ![image](https://github.com/EazyNick/SmartPhoneMacroApp/assets/123717093/abdcdc1c-5394-4ae8-a0ca-a31d82d5dab0)
 
