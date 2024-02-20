@@ -1,50 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
     android:background="@color/background_color"
     android:padding="16dp">
 
+    <!-- 이미지뷰 -->
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/your_image1"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+
+    <!-- 버튼들 -->
     <Button
         android:id="@+id/startRecordButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="기록시작"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:background="@color/button_color"
         android:textColor="@color/text_color"
         android:elevation="8dp"
         android:textSize="18sp"
         android:fontFamily="sans-serif-condensed"
         android:padding="16dp"
-        android:layout_marginTop="16dp" />/>
+        android:layout_marginBottom="16dp" />
 
     <Button
         android:id="@+id/loadButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="불러오기"
+        android:layout_above="@id/startRecordButton"
+        android:layout_centerHorizontal="true"
         android:background="@color/button_color"
         android:textColor="@color/text_color"
         android:elevation="8dp"
         android:textSize="18sp"
         android:fontFamily="sans-serif-condensed"
         android:padding="16dp"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginBottom="16dp"/>
 
     <Button
         android:id="@+id/executeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="실행하기"
+        android:layout_above="@id/loadButton"
+        android:layout_centerHorizontal="true"
         android:background="@color/button_color"
         android:textColor="@color/text_color"
         android:elevation="8dp"
         android:textSize="18sp"
         android:fontFamily="sans-serif-condensed"
         android:padding="16dp"
-        android:layout_marginTop="16dp"/>
-</LinearLayout>
-
+        android:layout_marginBottom="16dp"/>
+</RelativeLayout>

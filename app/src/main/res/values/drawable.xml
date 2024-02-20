@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="your_image1">#FF000000</drawable>
+<!--    @drawable/your_image1_filename-->
+    <drawable name="your_image2">#FF000000</drawable>
+</resources>
