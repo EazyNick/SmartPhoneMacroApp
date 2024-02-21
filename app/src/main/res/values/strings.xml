@@ -6,6 +6,8 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="accessibility_service_description">이 서비스는 사용자의 화면 상호작용을 기록합니다.</string>
+    <string name="accessibility_service_id">com.example.smartphonemacroapp/.MyAccessibilityService</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris

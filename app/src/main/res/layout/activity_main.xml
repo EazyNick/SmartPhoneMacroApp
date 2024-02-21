@@ -6,58 +6,93 @@
     android:background="@color/background_color"
     android:padding="16dp">
 
-    <!-- 이미지뷰 -->
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/your_image1"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"/>
-
-    <!-- 버튼들 -->
     <Button
-        android:id="@+id/startRecordButton"
+        android:id="@+id/startRecordingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="기록시작"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="@color/button_color"
-        android:textColor="@color/text_color"
-        android:elevation="8dp"
-        android:textSize="18sp"
-        android:fontFamily="sans-serif-condensed"
-        android:padding="16dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:text="기록 시작" />
 
     <Button
-        android:id="@+id/loadButton"
+        android:id="@+id/stopRecordingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="불러오기"
-        android:layout_above="@id/startRecordButton"
         android:layout_centerHorizontal="true"
-        android:background="@color/button_color"
-        android:textColor="@color/text_color"
-        android:elevation="8dp"
-        android:textSize="18sp"
-        android:fontFamily="sans-serif-condensed"
-        android:padding="16dp"
-        android:layout_marginBottom="16dp"/>
+        android:layout_below="@id/startRecordingButton"
+        android:layout_marginTop="20dp"
+        android:text="기록 정지" />
 
     <Button
-        android:id="@+id/executeButton"
+        android:id="@+id/playEventsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="실행하기"
-        android:layout_above="@id/loadButton"
         android:layout_centerHorizontal="true"
-        android:background="@color/button_color"
-        android:textColor="@color/text_color"
-        android:elevation="8dp"
-        android:textSize="18sp"
-        android:fontFamily="sans-serif-condensed"
-        android:padding="16dp"
-        android:layout_marginBottom="16dp"/>
+        android:layout_below="@id/stopRecordingButton"
+        android:layout_marginTop="20dp"
+        android:text="재생 시작" />
 </RelativeLayout>
+
+
+    <!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:background="@color/background_color"-->
+<!--    android:padding="16dp">-->
+
+<!--    &lt;!&ndash; 이미지뷰 &ndash;&gt;-->
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView1"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src="@drawable/your_image1"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_centerHorizontal="true"/>-->
+
+<!--    &lt;!&ndash; 버튼들 &ndash;&gt;-->
+<!--    <Button-->
+<!--        android:id="@+id/startRecordButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="기록시작"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:background="@color/button_color"-->
+<!--        android:textColor="@color/text_color"-->
+<!--        android:elevation="8dp"-->
+<!--        android:textSize="18sp"-->
+<!--        android:fontFamily="sans-serif-condensed"-->
+<!--        android:padding="16dp"-->
+<!--        android:layout_marginBottom="16dp" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/loadButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="불러오기"-->
+<!--        android:layout_above="@id/startRecordButton"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:background="@color/button_color"-->
+<!--        android:textColor="@color/text_color"-->
+<!--        android:elevation="8dp"-->
+<!--        android:textSize="18sp"-->
+<!--        android:fontFamily="sans-serif-condensed"-->
+<!--        android:padding="16dp"-->
+<!--        android:layout_marginBottom="16dp"/>-->
+
+<!--    <Button-->
+<!--        android:id="@+id/executeButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="실행하기"-->
+<!--        android:layout_above="@id/loadButton"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:background="@color/button_color"-->
+<!--        android:textColor="@color/text_color"-->
+<!--        android:elevation="8dp"-->
+<!--        android:textSize="18sp"-->
+<!--        android:fontFamily="sans-serif-condensed"-->
+<!--        android:padding="16dp"-->
+<!--        android:layout_marginBottom="16dp"/>-->
+<!--</RelativeLayout>-->
