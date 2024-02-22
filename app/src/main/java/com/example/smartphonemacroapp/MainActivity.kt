@@ -1,22 +1,14 @@
 package com.example.smartphonemacroapp
 
-import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Button
-import com.example.smartphonemacroapp.databinding.ActivityMainBinding
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
+import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import com.example.smartphonemacroapp.databinding.ActivityMainBinding
 
 // ActivityMainBinding은 뷰 바인딩을 사용하여 XML 레이아웃 파일의 뷰에 대한 직접적인 참조를 제공
 // 이를 통해 findViewById 호출 없이 뷰를 조작
@@ -73,6 +65,7 @@ class MainActivity : AppCompatActivity() {
                 putBoolean("isRecording", false)
                 apply()
             }
+            
             Log.d("MainActivity", "기록 상태를 false로 변경")
             // "기록 시작" 버튼의 텍스트를 업데이트합니다.
             binding.startRecordingButton.text = "기록 시작"
@@ -84,9 +77,12 @@ class MainActivity : AppCompatActivity() {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }
             startActivity(homeIntent)
-            // 서비스에 이벤트 재생을 시작하도록 알립니다.
-            //service.playEvents()
+
+            // SharedPreferences에 이벤트 재생을 위한 플래그 설정
+            val prefs = getSharedPreferences("AppSettings", Context.MODE_PRIVATE)
+            prefs.edit().putBoolean("PlayEventsRequested", true).apply()
         }
+
     }
 
     // 사용자를 안드로이드의 접근성 설정 화면으로 이동시키는 인텐트를 실행하는 함수
@@ -101,9 +97,12 @@ class MainActivity : AppCompatActivity() {
         val isServiceRequestedBefore = prefs.getBoolean("isServiceRequested", false)
         val isServiceEnabled = isAccessibilityServiceEnabled()
 
-        Log.d("MainActivity", "이미 권한 요청 완료")
-        
-        if (!isServiceRequestedBefore && !isServiceEnabled) {
+        Log.d("MainActivity", "조건1: $isServiceRequestedBefore")
+        Log.d("MainActivity", "조건2: $isServiceEnabled")
+
+        //if (!isServiceRequestedBefore && !isServiceEnabled) {
+        if (!isServiceRequestedBefore or  !isServiceEnabled) {
+
             Log.d("MainActivity", "권한 요청")
             AlertDialog.Builder(this)
                 .setTitle("권한 요청")
@@ -114,6 +113,9 @@ class MainActivity : AppCompatActivity() {
                 }
                 .setNegativeButton("아니오", null)
                 .show()
+        }
+        else {
+            Log.d("MainActivity", "이미 권한 요청 완료")
         }
     }
 
@@ -128,35 +130,40 @@ class MainActivity : AppCompatActivity() {
         startRecordingButton.text = if (isRecording) "기록 중" else "기록 시작"
     }
 
-    fun isAccessibilityServiceEnabled(): Boolean {
-        Log.d("MainActivity", "접근성 활성화 확인중")
-        // strings.xml 파일에서 accessibility_service_id에 해당하는 리소스 값을 가져옵니다.
-        // 이 값은 접근성 서비스의 전체 경로(패키지 이름과 클래스 이름)를 나타냅니다.
-        val service = getString(R.string.accessibility_service_id)
+        fun isAccessibilityServiceEnabled(): Boolean {
+            Log.d("MainActivity", "접근성 활성화 확인중")
+            val service = getString(R.string.accessibility_service_id).replace("/", ".") // "/"를 "."로 변경하는 대신 올바른 형식 사용
+            val serviceId = service.replace("..", ".")
+            val enabledServicesSetting = Settings.Secure.getString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)
+            // strings.xml 파일에서 accessibility_service_id에 해당하는 리소스 값을 가져옵니다.
+            // 이 값은 접근성 서비스의 전체 경로(패키지 이름과 클래스 이름)를 나타냅니다.
 
-        // 안드로이드 시스템 설정에서 현재 활성화된 접근성 서비스 목록을 가져옵니다.
-        // 이 목록은 ":"로 구분된 문자열 형태로 반환됩니다.
-        val accessibilityServices = Settings.Secure.getString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)
+            Log.d("MainActivity", "Service ID for check: $serviceId")
+            Log.d("MainActivity", "Enabled Services: $enabledServicesSetting")
 
-        // 반환된 활성화된 접근성 서비스 목록 문자열에서 해당 서비스의 전체 경로를 포함하고 있는지 확인합니다.
-        // 포함하고 있다면, 해당 서비스가 활성화되어 있다는 의미이므로 true를 반환합니다.
-        // accessibilityServices가 null일 경우, ?: 연산자를 사용하여 false를 반환합니다.
-        // contains 메서드를 사용하여 서비스가 활성화된 접근성 서비스 목록에 포함되어 있는지 검사합니다.
-        val isServiceEnabled = accessibilityServices?.contains(service) ?: false
-        Log.d("MainActivity", "접근성 서비스 활성화 상태: $isServiceEnabled")
-        return isServiceEnabled
-    }
+    //        val service = getString(R.string.accessibility_service_id)
+    //        Log.d("MainActivity", "Service ID: $service")
+
+            // 반환된 활성화된 접근성 서비스 목록 문자열에서 해당 서비스의 전체 경로를 포함하고 있는지 확인합니다.
+            // 포함하고 있다면, 해당 서비스가 활성화되어 있다는 의미이므로 true를 반환합니다.
+            // accessibilityServices가 null일 경우, ?: 연산자를 사용하여 false를 반환합니다.
+            // contains 메서드를 사용하여 서비스가 활성화된 접근성 서비스 목록에 포함되어 있는지 검사합니다.
+            val isServiceEnabled = enabledServicesSetting?.contains(serviceId) ?: false
+
+            Log.d("MainActivity", "접근성 서비스 활성화 상태: $isServiceEnabled")
+            return isServiceEnabled
+        }
 
     // 액티비티가 사용자와 상호작용하기 시작할 때 호출
     // 접근성 서비스 활성화 여부를 확인하고, 필요한 경우 사용자에게 접근성 서비스 활성화를 요청하는 대화상자를 표시
     override fun onResume() {
         super.onResume()
         if (isAccessibilityServiceEnabled()) {
-            Log.d("MainActivity", "온리즘")
+            Log.d("MainActivity", "접근성 설정 확인완료")
             // 서비스가 활성화되었을 경우의 로직
         } else {
             // 서비스가 활성화되지 않았을 경우, 설정 화면으로 유도
-            Log.d("MainActivity", "온리즘2")
+            Log.d("MainActivity", "접근성 설정 확인되지 않아 다시 설정필요")
             showAccessibilityServiceRequestDialog()
         }
     }
