@@ -2,6 +2,7 @@
 <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
     android:description="@string/accessibility_service_description"
     android:settingsActivity=".SettingsActivity"
+    android:canPerformGestures="true"
     android:canRetrieveWindowContent="true"
     android:accessibilityEventTypes="typeViewClicked|typeViewFocused"
     android:accessibilityFeedbackType="feedbackSpoken"

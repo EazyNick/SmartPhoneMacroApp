@@ -31,16 +31,16 @@ class MainActivity : AppCompatActivity() {
         binding.startRecordingButton.setOnClickListener {
             // 서비스에 기록 시작을 알립니다.
             // AlertDialog.Builder를 사용하여 대화상자를 생성합니다.
-            AlertDialog.Builder(this@MainActivity).apply {
-                setTitle("알림") // 대화상자의 제목을 설정합니다.
-                setMessage("테스트 대화상자입니다.") // 대화상자의 메시지를 설정합니다.
-                setPositiveButton("확인") { dialog, which ->
-                    // '확인' 버튼을 누르면 대화상자를 닫습니다.
-                    dialog.dismiss()
-                }
-                // 대화상자를 화면에 표시합니다.
-                show()
-            }
+//            AlertDialog.Builder(this@MainActivity).apply {
+//                setTitle("알림") // 대화상자의 제목을 설정합니다.
+//                setMessage("테스트 대화상자입니다.") // 대화상자의 메시지를 설정합니다.
+//                setPositiveButton("확인") { dialog, which ->
+//                    // '확인' 버튼을 누르면 대화상자를 닫습니다.
+//                    dialog.dismiss()
+//                }
+//                // 대화상자를 화면에 표시합니다.
+//                show()
+//            }
             // SharedPreferences를 사용하여 기록 상태를 변경하고 저장합니다.
             val sharedPrefs = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
             with(sharedPrefs.edit()) {

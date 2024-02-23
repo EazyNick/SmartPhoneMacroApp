@@ -1,9 +1,11 @@
 package com.example.smartphonemacroapp
 
 import android.accessibilityservice.AccessibilityService
-import android.view.accessibility.AccessibilityEvent
+import android.accessibilityservice.GestureDescription
+import android.accessibilityservice.GestureDescription.StrokeDescription
 import android.content.SharedPreferences
 import android.util.Log
+import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
@@ -11,6 +13,7 @@ import com.google.gson.reflect.TypeToken
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
+
 
 class MyAccessibilityService : AccessibilityService() {
     //private val events = mutableListOf<AccessibilityEvent>()
@@ -132,6 +135,31 @@ class MyAccessibilityService : AccessibilityService() {
         // 루트 노드에서 시작하여 특정 조건을 만족하는 노드를 찾습니다.
         val rootNode = rootInActiveWindow
         val targetNode = rootNode?.findAccessibilityNodeInfosByViewId("viewId")?.firstOrNull()
+
+        val gestureBuilder = GestureDescription.Builder()
+        val clickPath = android.graphics.Path()
+        clickPath.moveTo(150.0F, 1780.0F) // x, y는 화면에서 클릭할 위치입니다.
+        Log.d("AccessibilityService", "150, 1780 클릭")
+
+        gestureBuilder.addStroke(StrokeDescription(clickPath, 0, 10000)) // 지속 시간을 100ms로 변경
+        val gesture = gestureBuilder.build()
+
+        Log.d("AccessibilityService", "$gesture")
+
+        dispatchGesture(gesture, object : GestureResultCallback() {
+                override fun onCompleted(gestureDescription: GestureDescription) {
+                    Log.d("AccessibilityService", "Gesture cancelled: ${gestureDescription.toString()}")
+                    super.onCompleted(gestureDescription)
+                    // 제스처 완료 후 처리
+                }
+
+                override fun onCancelled(gestureDescription: GestureDescription) {
+                    Log.d("AccessibilityService", "Gesture cancelled: ${gestureDescription.toString()}")
+                    super.onCancelled(gestureDescription)
+                // 제스처 취소 후 처리
+            }
+        }, null)
+
 
         // targetNode가 null이 아니라면, 그 노드에 대해 특정 액션을 수행합니다.
         targetNode?.let {
