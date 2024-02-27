@@ -13,7 +13,9 @@
 
 
 
-# 안드로이드만 가능
+# Platform
+Android only
+
 
 
 
