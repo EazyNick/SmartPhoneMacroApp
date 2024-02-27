@@ -4,9 +4,9 @@ import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
 import android.accessibilityservice.GestureDescription.StrokeDescription
 import android.content.SharedPreferences
+import android.graphics.Rect
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
-import android.view.accessibility.AccessibilityNodeInfo
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
@@ -22,7 +22,9 @@ class MyAccessibilityService : AccessibilityService() {
     data class EventData(
         val eventType: String,
         val contentDescription: String?,
-        val packageName: String
+        val packageName: String,
+        val x: Float,
+        val y: Float
     )
 
 
@@ -88,12 +90,27 @@ class MyAccessibilityService : AccessibilityService() {
     }
 
     private fun recordEvent(event: AccessibilityEvent, action: String) {
+        var centerX = 0
+        var centerY = 0
+
+        event.source?.let { nodeInfo ->
+            val rect = Rect()
+            nodeInfo.getBoundsInScreen(rect) // UI 요소의 화면 내 위치를 rect에 저장
+
+            // 중앙 좌표 계산
+            centerX = (rect.left + rect.right) / 2
+            centerY = (rect.top + rect.bottom) / 2
+
+            Log.d("AccessibilityService", "Center coordinates: X=$centerX, Y=$centerY")
+        }
+
         val eventInfo = mapOf(
             "action" to action,
             "packageName" to event.packageName.toString(),
             "timestamp" to System.currentTimeMillis(),
             "contentDescription" to (event.contentDescription?.toString() ?: ""),
-            // 여기에 더 많은 정보를 추가할 수 있습니다.
+            "x" to centerX, // X 좌표 추가
+            "y" to centerY  // Y 좌표 추가
         )
         events.add(eventInfo)
         Log.d("AccessibilityService", "Event recorded: $eventInfo")
@@ -128,28 +145,33 @@ class MyAccessibilityService : AccessibilityService() {
     }
 
     private fun performUserAction(event: EventData) {
-        // event 객체에서 필요한 정보를 추출합니다. 예: eventType, packageName 등
+        // event 객체에서 필요한 정보
         val eventType = event.eventType
-        val packageName = event.packageName
+        //val packageName = event.packageName
+        val x = event.x
+        val y = event.y
 
         // 루트 노드에서 시작하여 특정 조건을 만족하는 노드를 찾습니다.
         val rootNode = rootInActiveWindow
+        //특정 view ID를 가진 노드를 찾습니다.
         val targetNode = rootNode?.findAccessibilityNodeInfosByViewId("viewId")?.firstOrNull()
 
         val gestureBuilder = GestureDescription.Builder()
         val clickPath = android.graphics.Path()
-        clickPath.moveTo(150.0F, 1780.0F) // x, y는 화면에서 클릭할 위치입니다.
-        Log.d("AccessibilityService", "150, 1780 클릭")
 
-        gestureBuilder.addStroke(StrokeDescription(clickPath, 0, 10000)) // 지속 시간을 100ms로 변경
+//        clickPath.moveTo(x, y) // x, y는 화면에서 클릭할 위치입니다.
+//        Log.d("AccessibilityService", "Gesture completed at x=$x, y=$y")
+
+        gestureBuilder.addStroke(StrokeDescription(clickPath, 0, 100)) // 지속 시간을 100ms로 변경
         val gesture = gestureBuilder.build()
 
         Log.d("AccessibilityService", "$gesture")
 
         dispatchGesture(gesture, object : GestureResultCallback() {
                 override fun onCompleted(gestureDescription: GestureDescription) {
-                    Log.d("AccessibilityService", "Gesture cancelled: ${gestureDescription.toString()}")
+                    Log.d("AccessibilityService", "Gesture completed at x=$x, y=$y")
                     super.onCompleted(gestureDescription)
+                    clickPath.moveTo(x, y) // x, y는 화면에서 클릭할 위치입니다.
                     // 제스처 완료 후 처리
                 }
 
@@ -161,17 +183,17 @@ class MyAccessibilityService : AccessibilityService() {
         }, null)
 
 
-        // targetNode가 null이 아니라면, 그 노드에 대해 특정 액션을 수행합니다.
-        targetNode?.let {
-            when (eventType) {
-                // 클릭 이벤트를 재현하는 경우
-                "typeViewClicked" -> {
-                    it.performAction(AccessibilityNodeInfo.ACTION_CLICK)
-                }
-                // 다른 이벤트 유형에 대한 처리를 추가할 수 있습니다.
-                else -> {}
-            }
-        }
+//        // targetNode가 null이 아니라면, 그 노드에 대해 특정 액션을 수행합니다.
+//        targetNode?.let {
+//            when (eventType) {
+//                // 클릭 이벤트를 재현하는 경우
+//                "typeViewClicked" -> {
+//                    it.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+//                }
+//                // 다른 이벤트 유형에 대한 처리를 추가할 수 있습니다.
+//                else -> {}
+//            }
+//        }
     }
 
     private fun loadEventsFromJson(): String? {
